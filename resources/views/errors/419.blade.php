@@ -1,0 +1,1 @@
+@extends(auth()->check()?'layouts.app':'layouts.guest') @section('title','419 | MEDGRID') @section('content')<div class='card panel'><p class='eyebrow'>Request status</p><h1>419</h1><p>Your session expired. Sign in and try again.</p><a class='btn btn-secondary' href='/'>Return to MEDGRID</a></div>@endsection

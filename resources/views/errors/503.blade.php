@@ -1,0 +1,1 @@
+@extends(auth()->check()?'layouts.app':'layouts.guest') @section('title','503 | MEDGRID') @section('content')<div class='card panel'><p class='eyebrow'>Request status</p><h1>503</h1><p>MEDGRID is temporarily unavailable.</p><a class='btn btn-secondary' href='/'>Return to MEDGRID</a></div>@endsection

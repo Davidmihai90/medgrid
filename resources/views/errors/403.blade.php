@@ -1,0 +1,1 @@
+@extends(auth()->check()?'layouts.app':'layouts.guest') @section('title','403 | MEDGRID') @section('content')<div class='card panel'><p class='eyebrow'>Request status</p><h1>403</h1><p>You are not authorized to access this resource.</p><a class='btn btn-secondary' href='/'>Return to MEDGRID</a></div>@endsection

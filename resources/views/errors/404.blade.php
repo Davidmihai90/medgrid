@@ -1,0 +1,1 @@
+@extends(auth()->check()?'layouts.app':'layouts.guest') @section('title','404 | MEDGRID') @section('content')<div class='card panel'><p class='eyebrow'>Request status</p><h1>404</h1><p>The requested resource could not be found.</p><a class='btn btn-secondary' href='/'>Return to MEDGRID</a></div>@endsection

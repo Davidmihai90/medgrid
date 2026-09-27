@@ -1,0 +1,1 @@
+@extends(auth()->check()?'layouts.app':'layouts.guest') @section('title','500 | MEDGRID') @section('content')<div class='card panel'><p class='eyebrow'>Request status</p><h1>500</h1><p>The application could not complete the request.</p><a class='btn btn-secondary' href='/'>Return to MEDGRID</a></div>@endsection
