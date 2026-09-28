@@ -10,6 +10,9 @@ enum EmergencyCaseStatus: string
     case UnitAccepted = 'UNIT_ACCEPTED';
     case EnRouteToScene = 'EN_ROUTE_TO_SCENE';
     case OnScene = 'ON_SCENE';
+    case PatientContact = 'PATIENT_CONTACT';
+    case Assessment = 'ASSESSMENT';
+    case DestinationPending = 'DESTINATION_PENDING';
     case Cancelled = 'CANCELLED';
     case Closed = 'CLOSED';
 

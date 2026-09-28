@@ -1985,3 +1985,8 @@ Speed must never bypass:
 Realtime means synchronized operational awareness.
 
 It does not mean sacrificing correctness.
+## M2 Implementation Note
+
+M2 adds the private `encounter.{encounterId}` channel. Authorization requires the current organization, `encounters.view`, an accepted assignment, and active crew membership on the assigned vehicle.
+
+`clinical.state.changed` uses a versioned minimal envelope on case and encounter channels. It carries resource/state identifiers only; patient names, national identifiers, note bodies, and assessment responses are not broadcast. Clients refetch authoritative HTTP state after an event and after reconnect.

@@ -5,6 +5,7 @@ use App\Domain\Organizations\Enums\MembershipStatus;
 use App\Domain\Organizations\Enums\OrganizationStatus;
 use App\Models\EmergencyCase;
 use App\Models\Organization;
+use App\Models\PatientEncounter;
 use App\Models\User;
 use App\Models\Vehicle;
 use Illuminate\Support\Facades\Broadcast;
@@ -27,4 +28,10 @@ Broadcast::channel('vehicle.{vehicleId}', function (User $u, string $id) {
     $v = Vehicle::find($id);
 
     return $v && $u->hasPermission(Permissions::AssignmentsView, $v->organization);
+});
+
+Broadcast::channel('encounter.{encounterId}', function (User $u, string $id) {
+    $encounter = PatientEncounter::find($id);
+
+    return $encounter && $u->can('view', $encounter);
 });

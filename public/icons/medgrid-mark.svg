@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="MEDGRID">
+  <rect width="512" height="512" rx="72" fill="#112839"/>
+  <path fill="#d7f0f0" d="M112 128h80l64 103 64-103h80v256h-72V244l-72 112-72-112v140h-72z"/>
+  <path fill="#ef4444" d="M224 64h64v96h96v64h-96v96h-64v-96h-96v-64h96z" opacity=".92"/>
+</svg>

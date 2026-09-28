@@ -1,8 +1,8 @@
 # MEDGRID
 
-MEDGRID is the secure application foundation for a real-time emergency medical coordination platform. The current implementation is **M0 Foundation** only: identity, organization isolation, authorization, audit, health, queues, and realtime infrastructure. It does not implement emergency cases, clinical workflows, Romanian 112 integration, or medical decision support.
+MEDGRID is a real-time emergency medical coordination platform. The current local implementation includes **M0 Foundation**, **M1 Dispatch**, and **M2 Ambulance**: tenant-aware identity and authorization, audited dispatch, accepted crew missions, patient encounters, append-only vitals, versioned assessments, Critical Mode, private realtime updates, and deliberately limited offline vital capture. It does not implement hospital destination workflows, Romanian 112 integration, autonomous medical decisions, or production deployment controls.
 
-> Development status: FOUNDATION COMPLETE for local development. MEDGRID is not production-ready, clinically validated, certified, or connected to governmental or hospital systems.
+> Development status: M2 AMBULANCE implemented for local development. MEDGRID is not production-ready, clinically validated, certified, or connected to governmental or hospital systems.
 
 ## Stack
 
@@ -13,7 +13,7 @@ MEDGRID is the secure application foundation for a real-time emergency medical c
 - Blade, Alpine.js, Tailwind CSS, Lucide, and Vite
 - PHPUnit against PostgreSQL (`medgrid_test`)
 
-Product and engineering requirements live in `docs/MASTER_SPEC.md`, `AGENTS.md`, and `docs/milestones/M0-foundation.md`.
+Product and engineering requirements live in `docs/MASTER_SPEC.md`, `AGENTS.md`, `docs/milestones/`, and `docs/M2-AMBULANCE.md`.
 
 ## Prerequisites
 
@@ -26,7 +26,7 @@ The primary local environment is Windows with Laragon. Install:
 - PostGIS for PostgreSQL 17 (Stack Builder is supported)
 - Redis listening on `127.0.0.1:6379`
 
-Docker is not required for M0.
+Docker is not required for local M2 development.
 
 ## PostgreSQL and PostGIS
 
@@ -112,6 +112,8 @@ The seeder creates fictional local data only. Examples include:
 - `platform.admin@medgrid.test`
 - `org.admin.a@medgrid.test`
 - `dispatcher.a@medgrid.test`
+- `paramedic.a@medgrid.test`
+- `driver.a@medgrid.test`
 - `org.admin.b@medgrid.test`
 - `auditor.b@medgrid.test`
 
@@ -119,7 +121,7 @@ All seeded accounts use the local value of `MEDGRID_DEMO_PASSWORD`. Seeder execu
 
 ## Verification
 
-Run the M0 test suite against the dedicated `medgrid_test` database:
+Run the complete suite against the dedicated `medgrid_test` database:
 
 ```powershell
 php vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --testdox

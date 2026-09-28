@@ -1,11 +1,12 @@
+import './offline';
 import Alpine from 'alpinejs';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 import {
     Activity, Ambulance, ArrowLeft, ArrowRight, Ban, Building2, Check, ChevronDown,
-    ClipboardCheck, createIcons, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard,
-    LogIn, LogOut, MapPin, Pencil, Plus, Radio, RadioTower, RefreshCw, ScrollText,
-    Settings2, Stethoscope, TriangleAlert, UserPlus, Users, X,
+    ClipboardCheck, ClipboardPlus, Clock3, CloudUpload, createIcons, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard,
+    LogIn, LogOut, MapPin, Navigation, Pencil, Plus, Radio, RadioTower, RefreshCw, Save, ScrollText,
+    Settings2, ShieldAlert, Stethoscope, TriangleAlert, UserPlus, UserRound, Users, X,
 } from 'lucide';
 
 window.Alpine = Alpine;
@@ -13,9 +14,9 @@ window.Pusher = Pusher;
 
 const icons = {
     Activity, Ambulance, ArrowLeft, ArrowRight, Ban, Building2, Check, ChevronDown,
-    ClipboardCheck, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard, LogIn, LogOut,
-    MapPin, Pencil, Plus, Radio, RadioTower, RefreshCw, ScrollText, Settings2,
-    Stethoscope, TriangleAlert, UserPlus, Users, X,
+    ClipboardCheck, ClipboardPlus, Clock3, CloudUpload, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard, LogIn, LogOut,
+    MapPin, Navigation, Pencil, Plus, Radio, RadioTower, RefreshCw, Save, ScrollText, Settings2, ShieldAlert,
+    Stethoscope, TriangleAlert, UserPlus, UserRound, Users, X,
 };
 const statusNodes = () => document.querySelectorAll('[data-realtime-status]');
 const setRealtimeState = (state) => statusNodes().forEach((node) => {
@@ -56,6 +57,9 @@ const initializeRealtime = () => {
         let connected = false;
         const refresh = () => window.location.reload();
         echo.private(`dispatch.${organizationId}`).listen('.dispatch.state.changed', refresh);
+        if (board.dataset.encounterId) {
+            echo.private(`encounter.${board.dataset.encounterId}`).listen('.clinical.state.changed', refresh);
+        }
         connection.bind('connected', () => {
             if (connected) {
                 refresh();

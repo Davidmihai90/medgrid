@@ -36,6 +36,11 @@ class EmergencyCase extends Model
         return $this->hasMany(CaseEvent::class)->orderByDesc('occurred_at');
     }
 
+    public function encounters(): HasMany
+    {
+        return $this->hasMany(PatientEncounter::class);
+    }
+
     public function assignments(): HasMany
     {
         return $this->hasMany(CaseVehicleAssignment::class);

@@ -1693,3 +1693,8 @@ When choosing between convenience and unnecessary exposure of sensitive informat
 When security requirements are uncertain, do not silently guess.
 
 Document the uncertainty and require an explicit decision before introducing a high-risk behavior.
+## M2 Clinical and Offline Controls
+
+Clinical mutation requires organization ownership, accepted assignment, active crew relationship, and a granular operation permission. Patient identity responses omit national identifiers and cross-tenant resources are hidden where applicable. Clinical corrections, identity changes, encounter creation, assessment completion, condition changes, and notes produce audit records without duplicating full sensitive payloads.
+
+The M2 PWA service worker caches only static build assets, manifest, and icon. It never caches navigation, login, broadcasting authorization, or API responses. The IndexedDB queue is restricted to additive vital operations and stores no credential or patient identity. Browser storage is not application-level encrypted; production use requires managed-device controls and an approved retention/reconciliation policy.

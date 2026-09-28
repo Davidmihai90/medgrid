@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SystemHealthController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AmbulanceClinicalController;
 use App\Http\Controllers\AmbulanceMissionController;
 use App\Http\Controllers\AmbulanceMissionStateController;
 use App\Http\Controllers\ApplicationShellController;
@@ -46,6 +47,15 @@ Route::middleware(['auth', 'active', 'current.organization'])->group(function ()
         Route::get('/ambulance', AmbulanceMissionController::class)->name('area.ambulance');
         Route::post('/ambulance/assignments/{assignment}/delivery', [AmbulanceMissionStateController::class, 'deliver'])->name('ambulance.delivery');
         Route::post('/ambulance/assignments/{assignment}/acceptance', [AmbulanceMissionStateController::class, 'accept'])->name('ambulance.acceptance');
+        Route::post('/ambulance/cases/{case}/workflow', [AmbulanceClinicalController::class, 'workflow'])->name('ambulance.workflow');
+        Route::post('/ambulance/cases/{case}/encounters', [AmbulanceClinicalController::class, 'encounter'])->name('ambulance.encounters.store');
+        Route::put('/ambulance/encounters/{encounter}/patients/{patient}', [AmbulanceClinicalController::class, 'patient'])->name('ambulance.patients.update');
+        Route::post('/ambulance/encounters/{encounter}/vitals', [AmbulanceClinicalController::class, 'vital'])->name('ambulance.vitals.store');
+        Route::put('/ambulance/encounters/{encounter}/condition', [AmbulanceClinicalController::class, 'condition'])->name('ambulance.condition.update');
+        Route::post('/ambulance/encounters/{encounter}/notes', [AmbulanceClinicalController::class, 'note'])->name('ambulance.notes.store');
+        Route::post('/ambulance/encounters/{encounter}/assessments/{version}', [AmbulanceClinicalController::class, 'start'])->name('ambulance.assessments.start');
+        Route::put('/ambulance/assessments/{assessment}/responses', [AmbulanceClinicalController::class, 'responses'])->name('ambulance.assessments.responses');
+        Route::post('/ambulance/assessments/{assessment}/complete', [AmbulanceClinicalController::class, 'complete'])->name('ambulance.assessments.complete');
     });
     foreach (['hospital', 'medical', 'control'] as $area) {
         Route::get('/'.$area, ApplicationShellController::class)->defaults('area', $area)->middleware('area:'.$area)->name('area.'.$area);
