@@ -5,8 +5,12 @@ namespace App\Providers;
 use App\Domain\Identity\Services\ApplicationAreaRegistry;
 use App\Domain\Identity\Support\Permissions;
 use App\Domain\Organizations\Services\CurrentOrganization;
+use App\Models\CaseVehicleAssignment;
+use App\Models\EmergencyCase;
 use App\Models\Organization;
 use App\Models\User;
+use App\Policies\CaseVehicleAssignmentPolicy;
+use App\Policies\EmergencyCasePolicy;
 use App\Policies\OrganizationPolicy;
 use App\Policies\UserPolicy;
 use App\Support\CorrelationContext;
@@ -34,6 +38,8 @@ class AppServiceProvider extends ServiceProvider
         Password::defaults(fn () => Password::min(12)->mixedCase()->numbers()->symbols()->uncompromised());
         ResetPassword::createUrlUsing(fn (object $notifiable, string $token) => url(route('password.reset', ['token' => $token, 'email' => $notifiable->getEmailForPasswordReset()], false)));
         Gate::policy(Organization::class, OrganizationPolicy::class);
+        Gate::policy(EmergencyCase::class, EmergencyCasePolicy::class);
+        Gate::policy(CaseVehicleAssignment::class, CaseVehicleAssignmentPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::before(fn (User $user) => $user->isPlatformSuperAdministrator() ? true : null);
         foreach (Permissions::All as $permission) {

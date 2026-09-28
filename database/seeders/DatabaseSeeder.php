@@ -31,12 +31,12 @@ class DatabaseSeeder extends Seeder
         $definitions = [
             RoleSlugs::SuperAdministrator => ['Super Administrator', 'PLATFORM', PermissionNames::All],
             RoleSlugs::OrganizationAdministrator => ['Organization Administrator', 'ORGANIZATION', PermissionNames::All],
-            RoleSlugs::Dispatcher => ['Dispatcher', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::MedicalCoordinator => ['Medical Coordinator', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::AmbulancePhysician => ['Ambulance Physician', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::Paramedic => ['Paramedic', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::Nurse => ['Nurse', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::AmbulanceDriver => ['Ambulance Driver', 'ORGANIZATION', [PermissionNames::DashboardView]],
+            RoleSlugs::Dispatcher => ['Dispatcher', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::CasesCreate, PermissionNames::CasesUpdate, PermissionNames::CasesAssign, PermissionNames::CasesClose, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsCreate, PermissionNames::AssignmentsCancel, PermissionNames::AssignmentsReassign]],
+            RoleSlugs::MedicalCoordinator => ['Medical Coordinator', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::CasesUpdate]],
+            RoleSlugs::AmbulancePhysician => ['Ambulance Physician', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept]],
+            RoleSlugs::Paramedic => ['Paramedic', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept]],
+            RoleSlugs::Nurse => ['Nurse', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept]],
+            RoleSlugs::AmbulanceDriver => ['Ambulance Driver', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept]],
             RoleSlugs::HospitalOperator => ['Hospital Operator', 'ORGANIZATION', [PermissionNames::DashboardView]],
             RoleSlugs::HospitalResourceManager => ['Hospital Resource Manager', 'ORGANIZATION', [PermissionNames::DashboardView]],
             RoleSlugs::Doctor => ['Doctor', 'ORGANIZATION', [PermissionNames::DashboardView]],
@@ -71,8 +71,8 @@ class DatabaseSeeder extends Seeder
 
     private function member(Organization $org, string $name, string $email, string $role, array $roles, string $password): void
     {
-        $user = $this->user($name,$email,$password);
-        $membership = OrganizationMembership::updateOrCreate(['organization_id' => $org->id, 'user_id' => $user->id],['status' => MembershipStatus::Active]);
+        $user = $this->user($name, $email, $password);
+        $membership = OrganizationMembership::updateOrCreate(['organization_id' => $org->id, 'user_id' => $user->id], ['status' => MembershipStatus::Active]);
         $membership->roles()->sync([$roles[$role]->id]);
     }
 }

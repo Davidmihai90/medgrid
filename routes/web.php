@@ -5,11 +5,17 @@ use App\Http\Controllers\Admin\OrganizationController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SystemHealthController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\AmbulanceMissionController;
+use App\Http\Controllers\AmbulanceMissionStateController;
 use App\Http\Controllers\ApplicationShellController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DispatchAssignmentController;
+use App\Http\Controllers\DispatchAssignmentManagementController;
+use App\Http\Controllers\DispatchBoardController;
+use App\Http\Controllers\DispatchCaseController;
 use App\Http\Controllers\OperationalNoticeController;
 use App\Http\Controllers\OrganizationContextController;
 use Illuminate\Support\Facades\Route;
@@ -28,10 +34,22 @@ Route::middleware(['auth', 'active', 'current.organization'])->group(function ()
     Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', DashboardController::class)->name('dashboard');
     Route::put('/organization-context/{organization}', [OrganizationContextController::class, 'update'])->name('organization-context.update');
-    foreach (['dispatch', 'ambulance', 'hospital', 'medical', 'control'] as $area) {
+    Route::middleware('area:dispatch')->group(function () {
+        Route::get('/dispatch', DispatchBoardController::class)->name('area.dispatch');
+        Route::post('/dispatch/cases', [DispatchCaseController::class, 'store'])->name('dispatch.cases.store');
+        Route::post('/dispatch/cases/{emergencyCase}/triage', [DispatchCaseController::class, 'triage'])->name('dispatch.cases.triage');
+        Route::post('/dispatch/cases/{emergencyCase}/assignments', [DispatchAssignmentController::class, 'store'])->name('dispatch.assignments.store');
+        Route::put('/dispatch/assignments/{assignment}', [DispatchAssignmentManagementController::class, 'update'])->name('dispatch.assignments.update');
+        Route::delete('/dispatch/assignments/{assignment}', [DispatchAssignmentManagementController::class, 'destroy'])->name('dispatch.assignments.destroy');
+    });
+    Route::middleware('area:ambulance')->group(function () {
+        Route::get('/ambulance', AmbulanceMissionController::class)->name('area.ambulance');
+        Route::post('/ambulance/assignments/{assignment}/delivery', [AmbulanceMissionStateController::class, 'deliver'])->name('ambulance.delivery');
+        Route::post('/ambulance/assignments/{assignment}/acceptance', [AmbulanceMissionStateController::class, 'accept'])->name('ambulance.acceptance');
+    });
+    foreach (['hospital', 'medical', 'control'] as $area) {
         Route::get('/'.$area, ApplicationShellController::class)->defaults('area', $area)->middleware('area:'.$area)->name('area.'.$area);
-    }
-    Route::prefix('admin')->name('admin.')->middleware('area:admin')->group(function () {
+    }Route::prefix('admin')->name('admin.')->middleware('area:admin')->group(function () {
         Route::get('/', fn () => view('admin.index'))->name('index');
         Route::resource('organizations', OrganizationController::class)->except('destroy');
         Route::resource('users', UserController::class)->except('destroy');

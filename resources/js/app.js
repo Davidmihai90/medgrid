@@ -1,26 +1,37 @@
 import Alpine from 'alpinejs';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
-import { createIcons, icons } from 'lucide';
+import {
+    Activity, Ambulance, ArrowLeft, ArrowRight, Ban, Building2, Check, ChevronDown,
+    ClipboardCheck, createIcons, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard,
+    LogIn, LogOut, MapPin, Pencil, Plus, Radio, RadioTower, RefreshCw, ScrollText,
+    Settings2, Stethoscope, TriangleAlert, UserPlus, Users, X,
+} from 'lucide';
 
 window.Alpine = Alpine;
 window.Pusher = Pusher;
 
+const icons = {
+    Activity, Ambulance, ArrowLeft, ArrowRight, Ban, Building2, Check, ChevronDown,
+    ClipboardCheck, Eye, Grid2X2, Hospital, KeyRound, LayoutDashboard, LogIn, LogOut,
+    MapPin, Pencil, Plus, Radio, RadioTower, RefreshCw, ScrollText, Settings2,
+    Stethoscope, TriangleAlert, UserPlus, Users, X,
+};
 const statusNodes = () => document.querySelectorAll('[data-realtime-status]');
 const setRealtimeState = (state) => statusNodes().forEach((node) => {
     node.dataset.state = state.toLowerCase();
     node.querySelector('[data-label]').textContent = state;
 });
-
 const initializeRealtime = () => {
-    if (!navigator.onLine) setRealtimeState('OFFLINE');
-    else setRealtimeState('RECONNECTING');
-
+    setRealtimeState(navigator.onLine ? 'RECONNECTING' : 'OFFLINE');
     const key = import.meta.env.VITE_REVERB_APP_KEY;
-    if (!key) { setRealtimeState('DEGRADED'); return; }
-
+    if (! key) {
+        setRealtimeState('DEGRADED');
+        return;
+    }
     const echo = new Echo({
-        broadcaster: 'reverb', key,
+        broadcaster: 'reverb',
+        key,
         wsHost: import.meta.env.VITE_REVERB_HOST || window.location.hostname,
         wsPort: Number(import.meta.env.VITE_REVERB_PORT || 80),
         wssPort: Number(import.meta.env.VITE_REVERB_PORT || 443),
@@ -35,10 +46,28 @@ const initializeRealtime = () => {
     connection.bind('failed', () => setRealtimeState('DEGRADED'));
     connection.bind('disconnected', () => setRealtimeState(navigator.onLine ? 'RECONNECTING' : 'OFFLINE'));
     const organizationId = document.body.dataset.organizationId;
-    if (organizationId) echo.private(`organization.${organizationId}`).listen('.organization.operational.notice', (event) => window.dispatchEvent(new CustomEvent('medgrid-notice', { detail: event.data })));
+    if (organizationId) {
+        echo.private(`organization.${organizationId}`).listen('.organization.operational.notice', (event) => {
+            window.dispatchEvent(new CustomEvent('medgrid-notice', { detail: event.data }));
+        });
+    }
+    const board = document.querySelector('[data-dispatch-board], [data-ambulance-board]');
+    if (organizationId && board) {
+        let connected = false;
+        const refresh = () => window.location.reload();
+        echo.private(`dispatch.${organizationId}`).listen('.dispatch.state.changed', refresh);
+        connection.bind('connected', () => {
+            if (connected) {
+                refresh();
+            }
+            connected = true;
+        });
+    }
 };
-
 window.addEventListener('online', () => setRealtimeState('RECONNECTING'));
 window.addEventListener('offline', () => setRealtimeState('OFFLINE'));
-document.addEventListener('DOMContentLoaded', () => { createIcons({ icons }); initializeRealtime(); });
+document.addEventListener('DOMContentLoaded', () => {
+    createIcons({ icons });
+    initializeRealtime();
+});
 Alpine.start();
