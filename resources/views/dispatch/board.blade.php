@@ -80,6 +80,23 @@
                 </div>
             </dl>
 
+            <section class="destination-readonly" aria-label="Patient destination status">
+                <div class="section-head">
+                    <div><p class="eyebrow">Destination support</p><h3>Patient decisions</h3></div>
+                    <span class="state-pill">READ ONLY</span>
+                </div>
+                @forelse($selected->encounters as $patientEncounter)
+                    @php($destination = $patientEncounter->destinationSelections->firstWhere('superseded_at', null))
+                    @php($latestEvaluation = $patientEncounter->destinationEvaluations->sortByDesc('created_at')->first())
+                    <article>
+                        <div><strong>{{ $patientEncounter->encounter_number }}</strong><small>{{ $latestEvaluation ? 'Evaluation '.$latestEvaluation->status->value : 'Not evaluated' }}</small></div>
+                        <div><strong>{{ $destination?->hospital?->name ?? 'Destination pending' }}</strong><small>{{ $destination ? str_replace('_', ' ', $destination->selection_type->value) : 'No human decision' }}</small></div>
+                    </article>
+                @empty
+                    <p class="empty-row">No patient encounters.</p>
+                @endforelse
+            </section>
+
             @if(in_array($selected->status->value, ['RECEIVED', 'TRIAGED']))
                 <form class="compact-form" method="post" action="{{ route('dispatch.cases.triage', $selected) }}">
                     @csrf

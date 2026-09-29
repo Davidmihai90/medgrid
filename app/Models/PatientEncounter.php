@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-#[Fillable(['organization_id', 'emergency_case_id', 'patient_id', 'encounter_index', 'encounter_number', 'status', 'condition_level', 'allergy_status', 'medication_status', 'history_status', 'contact_at', 'assessment_started_at', 'assessment_completed_at', 'version', 'created_by', 'updated_by'])]
+#[Fillable(['organization_id', 'emergency_case_id', 'patient_id', 'encounter_index', 'encounter_number', 'status', 'condition_level', 'allergy_status', 'medication_status', 'history_status', 'contact_at', 'assessment_started_at', 'assessment_completed_at', 'version', 'destination_version', 'created_by', 'updated_by'])]
 class PatientEncounter extends Model
 {
     use HasUlids;
@@ -51,8 +51,23 @@ class PatientEncounter extends Model
         return $this->hasMany(ClinicalNote::class)->orderByDesc('recorded_at');
     }
 
-    public function scopeForOrganization(Builder $q, Organization $o): Builder
+    public function destinationRequirements(): HasMany
     {
-        return $q->where('organization_id', $o->id);
+        return $this->hasMany(DestinationRequirement::class);
+    }
+
+    public function destinationEvaluations(): HasMany
+    {
+        return $this->hasMany(DestinationEvaluation::class);
+    }
+
+    public function destinationSelections(): HasMany
+    {
+        return $this->hasMany(DestinationSelection::class);
+    }
+
+    public function scopeForOrganization(Builder $query, Organization $organization): Builder
+    {
+        return $query->where('organization_id', $organization->id);
     }
 }

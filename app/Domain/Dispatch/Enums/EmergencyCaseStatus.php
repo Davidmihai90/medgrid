@@ -13,6 +13,7 @@ enum EmergencyCaseStatus: string
     case PatientContact = 'PATIENT_CONTACT';
     case Assessment = 'ASSESSMENT';
     case DestinationPending = 'DESTINATION_PENDING';
+    case DestinationSelected = 'DESTINATION_SELECTED';
     case Cancelled = 'CANCELLED';
     case Closed = 'CLOSED';
 

@@ -110,9 +110,33 @@ final class Permissions
 
     public const HospitalIncomingAcknowledge = 'hospital_incoming.acknowledge';
 
-    public const M3 = [self::HospitalsView, self::HospitalsManage, self::HospitalDepartmentsView, self::HospitalDepartmentsManage, self::HospitalCapabilitiesView, self::HospitalCapabilitiesManage, self::HospitalAvailabilityView, self::HospitalAvailabilityUpdate, self::HospitalResourcesView, self::HospitalResourcesUpdate, self::HospitalIncomingView, self::HospitalIncomingAcknowledge];
+    public const DestinationRequirementsView = 'destination_requirements.view';
+
+    public const DestinationRequirementsManage = 'destination_requirements.manage';
+
+    public const DestinationEvaluationsView = 'destination_evaluations.view';
+
+    public const DestinationEvaluationsCreate = 'destination_evaluations.create';
+
+    public const DestinationSelectionView = 'destination_selection.view';
+
+    public const DestinationSelectionSelect = 'destination_selection.select';
+
+    public const DestinationSelectionOverride = 'destination_selection.override';
+
+    public const DestinationSelectionChange = 'destination_selection.change';
+
+    public const DestinationRulesView = 'destination_rules.view';
+
+    public const DestinationRulesManage = 'destination_rules.manage';
+
+    public const DestinationRulesActivate = 'destination_rules.activate';
 
     public const M2 = [self::PatientsView, self::PatientsCreate, self::PatientsUpdate, self::EncountersView, self::EncountersCreate, self::EncountersUpdate, self::VitalsView, self::VitalsCreate, self::VitalsCorrect, self::AssessmentsView, self::AssessmentsCreate, self::AssessmentsUpdate, self::AssessmentsComplete, self::ClinicalNotesView, self::ClinicalNotesCreate, self::AmbulanceWorkflowUpdate, self::SyncSubmit];
+
+    public const M3 = [self::HospitalsView, self::HospitalsManage, self::HospitalDepartmentsView, self::HospitalDepartmentsManage, self::HospitalCapabilitiesView, self::HospitalCapabilitiesManage, self::HospitalAvailabilityView, self::HospitalAvailabilityUpdate, self::HospitalResourcesView, self::HospitalResourcesUpdate, self::HospitalIncomingView, self::HospitalIncomingAcknowledge];
+
+    public const M4 = [self::DestinationRequirementsView, self::DestinationRequirementsManage, self::DestinationEvaluationsView, self::DestinationEvaluationsCreate, self::DestinationSelectionView, self::DestinationSelectionSelect, self::DestinationSelectionOverride, self::DestinationSelectionChange, self::DestinationRulesView, self::DestinationRulesManage, self::DestinationRulesActivate];
 
     public const All = [self::DashboardView, self::OrganizationsView, self::OrganizationsManage, self::UsersView, self::UsersManage, self::RolesView, self::RolesManage, self::AuditView, self::SystemHealthView, self::CasesView, self::CasesCreate, self::CasesUpdate, self::CasesAssign, self::CasesClose, self::VehiclesView, self::VehiclesManage, self::CrewView, self::CrewManage, self::AssignmentsView, self::AssignmentsCreate, self::AssignmentsCancel, self::AssignmentsReassign, self::AssignmentsAcknowledge, self::AssignmentsAccept, ...self::M2, ...self::M3];
 }

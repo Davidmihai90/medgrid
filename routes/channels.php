@@ -36,6 +36,12 @@ Broadcast::channel('encounter.{encounterId}', function (User $u, string $id) {
 
     return $encounter && $u->can('view', $encounter);
 });
+Broadcast::channel('destination.{encounterId}', function (User $u, string $id) {
+    $encounter = PatientEncounter::with('emergencyCase.organization')->find($id);
+
+    return $encounter
+        && $u->hasPermission(Permissions::DestinationEvaluationsView, $encounter->emergencyCase->organization);
+});
 Broadcast::channel('hospital.{hospitalId}', function (User $u, string $id) {
     $hospital = Hospital::find($id);
 

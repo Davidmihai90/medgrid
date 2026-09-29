@@ -15,7 +15,7 @@ class ApplicationAreaRegistry
             'dispatch' => ['label' => 'Dispatch', 'description' => 'Dispatch operating shell', 'icon' => 'radio', 'roles' => [RoleSlugs::Dispatcher, RoleSlugs::OrganizationAdministrator]],
             'ambulance' => ['label' => 'Ambulance', 'description' => 'Tablet-ready crew shell', 'icon' => 'ambulance', 'roles' => [RoleSlugs::AmbulancePhysician, RoleSlugs::Paramedic, RoleSlugs::Nurse, RoleSlugs::AmbulanceDriver]],
             'hospital' => ['label' => 'Hospital', 'description' => 'Receiving facility shell', 'icon' => 'hospital', 'roles' => [RoleSlugs::HospitalOperator, RoleSlugs::HospitalResourceManager, RoleSlugs::Doctor, RoleSlugs::Nurse]],
-            'medical' => ['label' => 'Medical coordination', 'description' => 'Clinical coordination shell', 'icon' => 'stethoscope', 'roles' => [RoleSlugs::MedicalCoordinator, RoleSlugs::AmbulancePhysician, RoleSlugs::Doctor]],
+            'medical' => ['label' => 'Medical coordination', 'description' => 'Destination coordination workspace', 'icon' => 'stethoscope', 'permissions' => [Permissions::DestinationRequirementsView]],
             'control' => ['label' => 'Control center', 'description' => 'Network oversight shell', 'icon' => 'layout-dashboard', 'roles' => [RoleSlugs::OrganizationAdministrator, RoleSlugs::Dispatcher, RoleSlugs::MedicalCoordinator]],
             'admin' => ['label' => 'Administration', 'description' => 'Identity and system controls', 'icon' => 'settings-2', 'permissions' => [Permissions::OrganizationsView, Permissions::UsersView, Permissions::RolesView, Permissions::AuditView, Permissions::SystemHealthView]],
         ];

@@ -1703,3 +1703,9 @@ The M2 PWA service worker caches only static build assets, manifest, and icon. I
 ## M3 Hospital Controls
 
 Hospital access requires both granular permission and explicit per-hospital assignment; same-organization membership alone is insufficient. Cross-tenant and unassigned-hospital resources are hidden. Operational writes use server-side validation, row locking, optimistic version checks and idempotency keys. Incoming responses contain a minimized operational summary rather than full clinical records.
+
+## M4 Destination Controls
+
+Destination requirements, evaluations, candidate evidence, rule versions, and selections are organization-scoped. Cross-organization hospitals are visible to the evaluator only through an explicit active `destination_hospital_access` record; this does not grant access to Hospital Command or unrelated hospital records.
+
+Unknown and ineligible candidates cannot be silently treated as eligible. Overrides and manual selection require a granular permission and a recorded reason. Selection changes require a separate permission, optimistic concurrency, and append-only history. Completed evidence snapshots and terminal evaluations are immutable through normal model operations. The dedicated destination realtime channel carries no patient identity or clinical observation payload.

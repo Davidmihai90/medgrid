@@ -1,5 +1,6 @@
 <?php
 
+use App\Domain\Destination\Exceptions\DestinationConflict;
 use App\Domain\Dispatch\Exceptions\DispatchConflict;
 use App\Domain\Hospitals\Exceptions\HospitalStateConflict;
 use App\Http\Middleware\AssignCorrelationId;
@@ -18,6 +19,9 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(web: __DI
     $m->alias(['active' => EnsureActiveAccount::class, 'current.organization' => EnsureCurrentOrganization::class, 'area' => EnsureApplicationAreaAccess::class]);
 })->withExceptions(function (Exceptions $e): void {
     $e->shouldRenderJsonWhen(fn (Request $r) => $r->is('api/*') || $r->expectsJson());
+    $e->render(function (DestinationConflict $x, Request $r) {
+        return $r->is('api/*') ? response()->json(['error' => ['code' => 'DESTINATION_CONFLICT', 'message' => $x->getMessage()]], 409) : back()->withErrors(['destination' => $x->getMessage()])->withInput();
+    });
     $e->render(function (DispatchConflict $x, Request $r) {
         return $r->is('api/*') ? response()->json(['error' => ['code' => 'DISPATCH_CONFLICT', 'message' => $x->getMessage()]], 409) : back()->withErrors(['dispatch' => $x->getMessage()])->withInput();
     });

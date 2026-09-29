@@ -88,6 +88,20 @@
             @endif
         </section>
 
+
+        @if($encounter)
+            @php($crewDestination = $encounter->destinationSelections->firstWhere('superseded_at', null))
+            @php($crewEvaluation = $encounter->destinationEvaluations->sortByDesc('created_at')->first())
+            <section class="destination-readonly crew-destination" aria-label="Destination status">
+                <div>
+                    <p class="eyebrow">Destination support · read only</p>
+                    <h3>{{ $crewDestination?->hospital?->name ?? 'Destination pending' }}</h3>
+                    <p>{{ $crewEvaluation ? 'Evaluation '.$crewEvaluation->status->value : 'No completed compatibility evaluation' }}</p>
+                </div>
+                <span class="state-pill">{{ $crewDestination ? str_replace('_', ' ', $crewDestination->selection_type->value) : 'NO DECISION' }}</span>
+            </section>
+        @endif
+
         @if(in_array($mission->status->value, ['PENDING', 'DELIVERED']))
             <section class="mission-acceptance">
                 <strong>Mission acceptance required</strong>

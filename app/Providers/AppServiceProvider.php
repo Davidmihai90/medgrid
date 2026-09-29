@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(CaseVehicleAssignment::class, CaseVehicleAssignmentPolicy::class);
         Gate::policy(User::class, UserPolicy::class);
         Gate::before(fn (User $user) => $user->isPlatformSuperAdministrator() ? true : null);
-        foreach (Permissions::All as $permission) {
+        foreach ([...Permissions::All, ...Permissions::M4] as $permission) {
             Gate::define($permission, fn (User $user) => $user->hasPermission($permission, app(CurrentOrganization::class)->get()));
         }
         RateLimiter::for('login', fn (Request $request) => Limit::perMinute(10)->by(strtolower((string) $request->input('email')).'|'.$request->ip()));

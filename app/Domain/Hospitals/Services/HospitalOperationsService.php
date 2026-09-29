@@ -152,8 +152,15 @@ class HospitalOperationsService
 
     public function notify(Hospital $hospital, EmergencyCase $case, User $actor, ?PatientEncounter $encounter, string $idempotencyKey): HospitalCaseNotification
     {
-        if ($case->organization_id !== $hospital->organization_id) {
-            throw new HospitalStateConflict('Case and hospital must belong to the same organization.');
+        $sharedForDestination = $case->organization_id !== $hospital->organization_id
+            && DB::table('destination_hospital_access')
+                ->where('organization_id', $case->organization_id)
+                ->where('hospital_id', $hospital->id)
+                ->where('active', true)
+                ->exists();
+
+        if ($case->organization_id !== $hospital->organization_id && ! $sharedForDestination) {
+            throw new HospitalStateConflict('Case and hospital are not connected by an active destination network agreement.');
         }
 
         $existing = HospitalCaseNotification::where('organization_id', $hospital->organization_id)->where('idempotency_key', $idempotencyKey)->first();
@@ -187,7 +194,7 @@ class HospitalOperationsService
             return $notification;
         });
 
-        $this->broadcast($hospital, 'hospital.incoming.created', ['notification_id' => $notification->id, 'case_id' => $case->id, 'case_number' => $case->case_number, 'priority' => $case->priority->value, 'status' => $notification->status->value], $case->id);
+        DB::afterCommit(fn () => $this->broadcast($hospital, 'hospital.incoming.created', ['notification_id' => $notification->id, 'case_id' => $case->id, 'case_number' => $case->case_number, 'priority' => $case->priority->value, 'status' => $notification->status->value], $case->id));
 
         return $notification;
     }

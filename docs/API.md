@@ -77,3 +77,19 @@ Each operation carries `operation_id`, `operation_type`, `target_id`, optional `
 - `POST /hospital-notifications/{notification}/acknowledge`
 
 Operational writes require an idempotency key and expected hospital version. Stale versions return `409 HOSPITAL_STATE_CONFLICT`. Expired or absent dynamic facts project as `UNKNOWN`.
+
+
+## Destination Support
+
+- `GET /encounters/{encounter}/destination`
+- `POST /encounters/{encounter}/destination-requirements`
+- `PUT /encounters/{encounter}/destination-requirements/{requirement}`
+- `DELETE /encounters/{encounter}/destination-requirements/{requirement}`
+- `POST /encounters/{encounter}/destination-evaluations`
+- `POST /encounters/{encounter}/destination-selections`
+- `GET /destination-rule-sets`
+- `POST /destination-rule-sets`
+- `POST /destination-rule-sets/{ruleSet}/versions`
+- `POST /destination-rule-versions/{version}/activate`
+
+Evaluations require an active organization-owned rule version and an idempotency key. Selections require `expected_destination_version` and an idempotency key. Unknown, ineligible, manual, and changed selections require the corresponding granular permission and an explicit reason. Stale versions and domain conflicts return `409 DESTINATION_CONFLICT`. Candidate responses include structured evidence and the immutable operational snapshot used by the engine.

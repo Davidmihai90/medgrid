@@ -46,8 +46,13 @@ class EmergencyCase extends Model
         return $this->hasMany(CaseVehicleAssignment::class);
     }
 
-    public function scopeForOrganization(Builder $q, Organization $o): Builder
+    public function destinationEvaluations(): HasMany
     {
-        return $q->where('organization_id', $o->id);
+        return $this->hasMany(DestinationEvaluation::class);
+    }
+
+    public function scopeForOrganization(Builder $query, Organization $organization): Builder
+    {
+        return $query->where('organization_id', $organization->id);
     }
 }

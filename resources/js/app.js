@@ -56,6 +56,7 @@ const initializeRealtime = () => {
     const refresh = () => window.location.reload();
     const operationalBoard = document.querySelector('[data-dispatch-board], [data-ambulance-board]');
     const hospitalBoard = document.querySelector('[data-hospital-board]');
+    const medicalBoard = document.querySelector('[data-medical-board]');
     if (organizationId && operationalBoard) {
         echo.private(`dispatch.${organizationId}`).listen('.dispatch.state.changed', refresh);
         if (operationalBoard.dataset.encounterId) {
@@ -65,7 +66,13 @@ const initializeRealtime = () => {
     if (hospitalBoard?.dataset.hospitalId) {
         echo.private(`hospital.${hospitalBoard.dataset.hospitalId}`).listen('.hospital.state.changed', refresh);
     }
-    if (operationalBoard || hospitalBoard) {
+    if (medicalBoard?.dataset.encounterId) {
+        echo.private(`encounter.${medicalBoard.dataset.encounterId}`).listen('.destination.state.changed', refresh);
+    }
+    if (operationalBoard?.dataset.encounterId) {
+        echo.private(`encounter.${operationalBoard.dataset.encounterId}`).listen('.destination.state.changed', refresh);
+    }
+    if (operationalBoard || hospitalBoard || medicalBoard) {
         let connected = false;
         connection.bind('connected', () => {
             if (connected) {

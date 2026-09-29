@@ -150,4 +150,10 @@ Public liveness is available at `/health/live` and returns only `{"status":"ok"}
 
 ## Milestones
 
-M0 establishes the foundation only. The next planned milestone is **M1 - Dispatch**, which must not begin until M0 acceptance is reviewed and explicitly approved.
+The completed implementation scope is M0 through M4. The next planned milestone is **M5 - Live Operations**, which is intentionally outside this release.
+
+## M4 Destination Support
+
+MEDGRID v0.5.0 adds deterministic destination compatibility evaluation and a Medical Coordinator workspace at `/medical`. Requirements are explicit, rules are declarative and versioned, candidate evidence is snapshotted, and final destination selection remains a separate human action. Cross-organization hospital candidates require explicit network access. See `docs/M4-DESTINATION-SUPPORT.md` and ADR 0010.
+
+Current completed implementation scope: M0 Foundation, M1 Dispatch, M2 Ambulance, M3 Hospital Network, and M4 Destination Support. M5 Live Operations is intentionally not implemented.

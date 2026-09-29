@@ -1995,3 +1995,9 @@ M2 adds the private `encounter.{encounterId}` channel. Authorization requires th
 ## M3 Hospital Channel
 
 M3 adds private hospital.{hospitalId}. Authorization requires current organization, hospitals.view, and explicit hospital assignment. hospital.state.changed carries identifiers, state and hospital version only. Hospital Command reloads authoritative HTTP state after events and reconnect.
+
+## M4 Destination Channel
+
+M4 adds private `destination.{encounterId}`. Authorization requires an active user with `destination_evaluations.view` in the encounter's owning organization. It is deliberately separate from `encounter.{encounterId}`, so destination coordinators do not gain access to unrelated clinical event traffic.
+
+`destination.state.changed` is emitted on the case and destination channels after completed evaluations and destination changes. Its versioned payload contains identifiers and state only. Clients reload the authorized HTTP projection; WebSockets never become the destination source of truth.

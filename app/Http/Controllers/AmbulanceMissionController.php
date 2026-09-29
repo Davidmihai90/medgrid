@@ -21,6 +21,8 @@ class AmbulanceMissionController extends Controller
             ->with([
                 'emergencyCase.encounters.patient',
                 'emergencyCase.encounters.assessments:id,patient_encounter_id,status',
+                'emergencyCase.encounters.destinationSelections.hospital',
+                'emergencyCase.encounters.destinationEvaluations',
                 'vehicle',
             ])
             ->latest('assigned_at')

@@ -23,7 +23,7 @@ class DispatchBoardController extends Controller
             ->latest('received_at')
             ->get();
         $selected = request('case') ? $cases->firstWhere('id', request('case')) : $cases->first();
-        $selected?->load('events', 'assignments.vehicle');
+        $selected?->load('events', 'assignments.vehicle', 'encounters.destinationSelections.hospital', 'encounters.destinationEvaluations');
         $vehicles = Vehicle::forOrganization($organization)
             ->with(['crewAssignments' => fn ($query) => $query->whereNull('ended_at')->with('user')])
             ->orderBy('callsign')

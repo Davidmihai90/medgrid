@@ -19,6 +19,8 @@ use App\Http\Controllers\DispatchBoardController;
 use App\Http\Controllers\DispatchCaseController;
 use App\Http\Controllers\HospitalCommandController;
 use App\Http\Controllers\HospitalUpdateController;
+use App\Http\Controllers\MedicalCoordinatorController;
+use App\Http\Controllers\MedicalDestinationController;
 use App\Http\Controllers\OperationalNoticeController;
 use App\Http\Controllers\OrganizationContextController;
 use Illuminate\Support\Facades\Route;
@@ -67,9 +69,15 @@ Route::middleware(['auth', 'active', 'current.organization'])->group(function ()
         Route::post('/hospital/{hospital}/restrictions', [HospitalUpdateController::class, 'restriction'])->name('hospital.restrictions.store');
         Route::post('/hospital/notifications/{notification}/acknowledge', [HospitalUpdateController::class, 'acknowledge'])->name('hospital.notifications.acknowledge');
     });
-    foreach (['medical', 'control'] as $area) {
-        Route::get('/'.$area, ApplicationShellController::class)->defaults('area', $area)->middleware('area:'.$area)->name('area.'.$area);
-    }
+    Route::middleware('area:medical')->group(function () {
+        Route::get('/medical', MedicalCoordinatorController::class)->name('area.medical');
+        Route::post('/medical/encounters/{encounter}/requirements', [MedicalDestinationController::class, 'storeRequirement'])->name('medical.requirements.store');
+        Route::put('/medical/encounters/{encounter}/requirements/{requirement}', [MedicalDestinationController::class, 'replaceRequirement'])->name('medical.requirements.replace');
+        Route::delete('/medical/encounters/{encounter}/requirements/{requirement}', [MedicalDestinationController::class, 'cancelRequirement'])->name('medical.requirements.cancel');
+        Route::post('/medical/encounters/{encounter}/evaluations', [MedicalDestinationController::class, 'evaluate'])->name('medical.evaluations.store');
+        Route::post('/medical/encounters/{encounter}/selections', [MedicalDestinationController::class, 'select'])->name('medical.selections.store');
+    });
+    Route::get('/control', ApplicationShellController::class)->defaults('area', 'control')->middleware('area:control')->name('area.control');
     Route::prefix('admin')->name('admin.')->middleware('area:admin')->group(function () {
         Route::get('/', fn () => view('admin.index'))->name('index');
         Route::resource('organizations', OrganizationController::class)->except('destroy');

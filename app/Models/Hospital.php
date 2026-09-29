@@ -63,4 +63,9 @@ class Hospital extends Model
     {
         return $this->belongsToMany(User::class, 'hospital_user_access')->withPivot(['id', 'organization_id']);
     }
+
+    public function destinationAccessOrganizations(): BelongsToMany
+    {
+        return $this->belongsToMany(Organization::class, 'destination_hospital_access')->withPivot(['id', 'active', 'granted_by'])->withTimestamps();
+    }
 }
