@@ -86,7 +86,33 @@ final class Permissions
 
     public const SyncSubmit = 'sync.submit';
 
+    public const HospitalsView = 'hospitals.view';
+
+    public const HospitalsManage = 'hospitals.manage';
+
+    public const HospitalDepartmentsView = 'hospital_departments.view';
+
+    public const HospitalDepartmentsManage = 'hospital_departments.manage';
+
+    public const HospitalCapabilitiesView = 'hospital_capabilities.view';
+
+    public const HospitalCapabilitiesManage = 'hospital_capabilities.manage';
+
+    public const HospitalAvailabilityView = 'hospital_availability.view';
+
+    public const HospitalAvailabilityUpdate = 'hospital_availability.update';
+
+    public const HospitalResourcesView = 'hospital_resources.view';
+
+    public const HospitalResourcesUpdate = 'hospital_resources.update';
+
+    public const HospitalIncomingView = 'hospital_incoming.view';
+
+    public const HospitalIncomingAcknowledge = 'hospital_incoming.acknowledge';
+
+    public const M3 = [self::HospitalsView, self::HospitalsManage, self::HospitalDepartmentsView, self::HospitalDepartmentsManage, self::HospitalCapabilitiesView, self::HospitalCapabilitiesManage, self::HospitalAvailabilityView, self::HospitalAvailabilityUpdate, self::HospitalResourcesView, self::HospitalResourcesUpdate, self::HospitalIncomingView, self::HospitalIncomingAcknowledge];
+
     public const M2 = [self::PatientsView, self::PatientsCreate, self::PatientsUpdate, self::EncountersView, self::EncountersCreate, self::EncountersUpdate, self::VitalsView, self::VitalsCreate, self::VitalsCorrect, self::AssessmentsView, self::AssessmentsCreate, self::AssessmentsUpdate, self::AssessmentsComplete, self::ClinicalNotesView, self::ClinicalNotesCreate, self::AmbulanceWorkflowUpdate, self::SyncSubmit];
 
-    public const All = [self::DashboardView, self::OrganizationsView, self::OrganizationsManage, self::UsersView, self::UsersManage, self::RolesView, self::RolesManage, self::AuditView, self::SystemHealthView, self::CasesView, self::CasesCreate, self::CasesUpdate, self::CasesAssign, self::CasesClose, self::VehiclesView, self::VehiclesManage, self::CrewView, self::CrewManage, self::AssignmentsView, self::AssignmentsCreate, self::AssignmentsCancel, self::AssignmentsReassign, self::AssignmentsAcknowledge, self::AssignmentsAccept, ...self::M2];
+    public const All = [self::DashboardView, self::OrganizationsView, self::OrganizationsManage, self::UsersView, self::UsersManage, self::RolesView, self::RolesManage, self::AuditView, self::SystemHealthView, self::CasesView, self::CasesCreate, self::CasesUpdate, self::CasesAssign, self::CasesClose, self::VehiclesView, self::VehiclesManage, self::CrewView, self::CrewManage, self::AssignmentsView, self::AssignmentsCreate, self::AssignmentsCancel, self::AssignmentsReassign, self::AssignmentsAcknowledge, self::AssignmentsAccept, ...self::M2, ...self::M3];
 }

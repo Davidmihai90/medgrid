@@ -1698,3 +1698,8 @@ Document the uncertainty and require an explicit decision before introducing a h
 Clinical mutation requires organization ownership, accepted assignment, active crew relationship, and a granular operation permission. Patient identity responses omit national identifiers and cross-tenant resources are hidden where applicable. Clinical corrections, identity changes, encounter creation, assessment completion, condition changes, and notes produce audit records without duplicating full sensitive payloads.
 
 The M2 PWA service worker caches only static build assets, manifest, and icon. It never caches navigation, login, broadcasting authorization, or API responses. The IndexedDB queue is restricted to additive vital operations and stores no credential or patient identity. Browser storage is not application-level encrypted; production use requires managed-device controls and an approved retention/reconciliation policy.
+
+
+## M3 Hospital Controls
+
+Hospital access requires both granular permission and explicit per-hospital assignment; same-organization membership alone is insufficient. Cross-tenant and unassigned-hospital resources are hidden. Operational writes use server-side validation, row locking, optimistic version checks and idempotency keys. Incoming responses contain a minimized operational summary rather than full clinical records.

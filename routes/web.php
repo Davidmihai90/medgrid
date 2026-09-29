@@ -17,6 +17,8 @@ use App\Http\Controllers\DispatchAssignmentController;
 use App\Http\Controllers\DispatchAssignmentManagementController;
 use App\Http\Controllers\DispatchBoardController;
 use App\Http\Controllers\DispatchCaseController;
+use App\Http\Controllers\HospitalCommandController;
+use App\Http\Controllers\HospitalUpdateController;
 use App\Http\Controllers\OperationalNoticeController;
 use App\Http\Controllers\OrganizationContextController;
 use Illuminate\Support\Facades\Route;
@@ -57,9 +59,18 @@ Route::middleware(['auth', 'active', 'current.organization'])->group(function ()
         Route::put('/ambulance/assessments/{assessment}/responses', [AmbulanceClinicalController::class, 'responses'])->name('ambulance.assessments.responses');
         Route::post('/ambulance/assessments/{assessment}/complete', [AmbulanceClinicalController::class, 'complete'])->name('ambulance.assessments.complete');
     });
-    foreach (['hospital', 'medical', 'control'] as $area) {
+    Route::middleware('area:hospital')->group(function () {
+        Route::get('/hospital', HospitalCommandController::class)->name('area.hospital');
+        Route::post('/hospital/{hospital}/receiving-status', [HospitalUpdateController::class, 'receiving'])->name('hospital.receiving.store');
+        Route::post('/hospital/capabilities/{capability}/availability', [HospitalUpdateController::class, 'capability'])->name('hospital.capability-availability.store');
+        Route::post('/hospital/{hospital}/resources/{resource}/state', [HospitalUpdateController::class, 'resource'])->name('hospital.resource-state.store');
+        Route::post('/hospital/{hospital}/restrictions', [HospitalUpdateController::class, 'restriction'])->name('hospital.restrictions.store');
+        Route::post('/hospital/notifications/{notification}/acknowledge', [HospitalUpdateController::class, 'acknowledge'])->name('hospital.notifications.acknowledge');
+    });
+    foreach (['medical', 'control'] as $area) {
         Route::get('/'.$area, ApplicationShellController::class)->defaults('area', $area)->middleware('area:'.$area)->name('area.'.$area);
-    }Route::prefix('admin')->name('admin.')->middleware('area:admin')->group(function () {
+    }
+    Route::prefix('admin')->name('admin.')->middleware('area:admin')->group(function () {
         Route::get('/', fn () => view('admin.index'))->name('index');
         Route::resource('organizations', OrganizationController::class)->except('destroy');
         Route::resource('users', UserController::class)->except('destroy');

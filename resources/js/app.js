@@ -52,14 +52,21 @@ const initializeRealtime = () => {
             window.dispatchEvent(new CustomEvent('medgrid-notice', { detail: event.data }));
         });
     }
-    const board = document.querySelector('[data-dispatch-board], [data-ambulance-board]');
-    if (organizationId && board) {
-        let connected = false;
-        const refresh = () => window.location.reload();
+
+    const refresh = () => window.location.reload();
+    const operationalBoard = document.querySelector('[data-dispatch-board], [data-ambulance-board]');
+    const hospitalBoard = document.querySelector('[data-hospital-board]');
+    if (organizationId && operationalBoard) {
         echo.private(`dispatch.${organizationId}`).listen('.dispatch.state.changed', refresh);
-        if (board.dataset.encounterId) {
-            echo.private(`encounter.${board.dataset.encounterId}`).listen('.clinical.state.changed', refresh);
+        if (operationalBoard.dataset.encounterId) {
+            echo.private(`encounter.${operationalBoard.dataset.encounterId}`).listen('.clinical.state.changed', refresh);
         }
+    }
+    if (hospitalBoard?.dataset.hospitalId) {
+        echo.private(`hospital.${hospitalBoard.dataset.hospitalId}`).listen('.hospital.state.changed', refresh);
+    }
+    if (operationalBoard || hospitalBoard) {
+        let connected = false;
         connection.bind('connected', () => {
             if (connected) {
                 refresh();
@@ -72,6 +79,15 @@ window.addEventListener('online', () => setRealtimeState('RECONNECTING'));
 window.addEventListener('offline', () => setRealtimeState('OFFLINE'));
 document.addEventListener('DOMContentLoaded', () => {
     createIcons({ icons });
+    document.querySelectorAll('[data-resource-form]').forEach((form) => {
+        const select = form.querySelector('[data-resource-select]');
+        select?.addEventListener('change', () => {
+            form.action = select.value;
+        });
+        if (select?.value) {
+            form.action = select.value;
+        }
+    });
     initializeRealtime();
 });
 Alpine.start();

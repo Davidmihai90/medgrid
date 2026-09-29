@@ -48,6 +48,11 @@ class User extends Authenticatable
             ->withPivot(['id', 'status'])->withTimestamps();
     }
 
+    public function hospitals(): BelongsToMany
+    {
+        return $this->belongsToMany(Hospital::class, 'hospital_user_access')->withPivot(['id', 'organization_id']);
+    }
+
     public function platformRoles(): BelongsToMany
     {
         return $this->belongsToMany(Role::class, 'platform_role_user')->withTimestamps();

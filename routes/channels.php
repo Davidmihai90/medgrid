@@ -4,6 +4,7 @@ use App\Domain\Identity\Support\Permissions;
 use App\Domain\Organizations\Enums\MembershipStatus;
 use App\Domain\Organizations\Enums\OrganizationStatus;
 use App\Models\EmergencyCase;
+use App\Models\Hospital;
 use App\Models\Organization;
 use App\Models\PatientEncounter;
 use App\Models\User;
@@ -34,4 +35,9 @@ Broadcast::channel('encounter.{encounterId}', function (User $u, string $id) {
     $encounter = PatientEncounter::find($id);
 
     return $encounter && $u->can('view', $encounter);
+});
+Broadcast::channel('hospital.{hospitalId}', function (User $u, string $id) {
+    $hospital = Hospital::find($id);
+
+    return $hospital && $u->can('view', $hospital);
 });

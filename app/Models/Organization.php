@@ -25,6 +25,11 @@ class Organization extends Model
         return ['status' => OrganizationStatus::class];
     }
 
+    public function hospitals(): HasMany
+    {
+        return $this->hasMany(Hospital::class);
+    }
+
     public function memberships(): HasMany
     {
         return $this->hasMany(OrganizationMembership::class);

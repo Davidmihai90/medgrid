@@ -37,9 +37,9 @@ class DatabaseSeeder extends Seeder
             RoleSlugs::Paramedic => ['Paramedic', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept, ...PermissionNames::M2]],
             RoleSlugs::Nurse => ['Nurse', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept, ...PermissionNames::M2]],
             RoleSlugs::AmbulanceDriver => ['Ambulance Driver', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::CasesView, PermissionNames::VehiclesView, PermissionNames::CrewView, PermissionNames::AssignmentsView, PermissionNames::AssignmentsAcknowledge, PermissionNames::AssignmentsAccept, PermissionNames::AmbulanceWorkflowUpdate, PermissionNames::EncountersView]],
-            RoleSlugs::HospitalOperator => ['Hospital Operator', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::HospitalResourceManager => ['Hospital Resource Manager', 'ORGANIZATION', [PermissionNames::DashboardView]],
-            RoleSlugs::Doctor => ['Doctor', 'ORGANIZATION', [PermissionNames::DashboardView]],
+            RoleSlugs::HospitalOperator => ['Hospital Operator', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::HospitalsView, PermissionNames::HospitalDepartmentsView, PermissionNames::HospitalCapabilitiesView, PermissionNames::HospitalAvailabilityView, PermissionNames::HospitalAvailabilityUpdate, PermissionNames::HospitalResourcesView, PermissionNames::HospitalIncomingView, PermissionNames::HospitalIncomingAcknowledge]],
+            RoleSlugs::HospitalResourceManager => ['Hospital Resource Manager', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::HospitalsView, PermissionNames::HospitalDepartmentsView, PermissionNames::HospitalCapabilitiesView, PermissionNames::HospitalAvailabilityView, PermissionNames::HospitalAvailabilityUpdate, PermissionNames::HospitalResourcesView, PermissionNames::HospitalResourcesUpdate, PermissionNames::HospitalIncomingView]],
+            RoleSlugs::Doctor => ['Doctor', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::HospitalsView, PermissionNames::HospitalDepartmentsView, PermissionNames::HospitalCapabilitiesView, PermissionNames::HospitalAvailabilityView, PermissionNames::HospitalResourcesView, PermissionNames::HospitalIncomingView, PermissionNames::HospitalIncomingAcknowledge]],
             RoleSlugs::Auditor => ['Auditor', 'ORGANIZATION', [PermissionNames::DashboardView, PermissionNames::AuditView]],
         ];
         $roles = [];
@@ -63,6 +63,7 @@ class DatabaseSeeder extends Seeder
         $this->member($orgB, 'Drina Demo Doctor', 'doctor.b@medgrid.test', RoleSlugs::Doctor, $roles, $password);
         $this->member($orgB, 'Aurel Demo Auditor', 'auditor.b@medgrid.test', RoleSlugs::Auditor, $roles, $password);
         $this->call(AmbulanceDemoSeeder::class);
+        $this->call(HospitalDemoSeeder::class);
     }
 
     private function user(string $name, string $email, string $password): User

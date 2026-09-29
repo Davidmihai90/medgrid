@@ -54,3 +54,26 @@ Supported M2 operations:
 - `CONDITION_UPDATE` at the server layer; the browser UI queues only `VITAL_CREATE`.
 
 Each operation carries `operation_id`, `operation_type`, `target_id`, optional `entity_version`, `payload`, `captured_at`, and optional device/session metadata. Results are returned per operation as `ACCEPTED`, `DUPLICATE`, `CONFLICT`, or `REJECTED`.
+
+
+## Hospital Network
+
+- `GET /hospitals`
+- `POST /hospitals`
+- `GET /hospitals/{hospital}`
+- `GET /hospitals/{hospital}/snapshot`
+- `GET /hospitals/{hospital}/departments`
+- `POST /hospitals/{hospital}/departments`
+- `GET /hospitals/{hospital}/capabilities`
+- `POST /hospitals/{hospital}/capabilities`
+- `PUT /hospital-capabilities/{capability}`
+- `GET /hospitals/{hospital}/availability`
+- `GET /hospitals/{hospital}/resources`
+- `GET /hospitals/{hospital}/incoming`
+- `POST /hospitals/{hospital}/receiving-status`
+- `POST /hospital-capabilities/{capability}/availability`
+- `POST /hospitals/{hospital}/resources/{resource}/state`
+- `POST /hospitals/{hospital}/restrictions`
+- `POST /hospital-notifications/{notification}/acknowledge`
+
+Operational writes require an idempotency key and expected hospital version. Stale versions return `409 HOSPITAL_STATE_CONFLICT`. Expired or absent dynamic facts project as `UNKNOWN`.
